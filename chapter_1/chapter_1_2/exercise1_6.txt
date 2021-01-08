@@ -1,0 +1,4 @@
+The program fragment is NOT legal, because:
+   no std::cout on ln 2,3 
+   no std::endl on ln 1,2
+above two steps would make fragment legal.
