@@ -1,0 +1,81 @@
+2.2.4. Scope of a Name:
+
+Scopes:
+
+	At any particular point in a program, each name that is in use refers to a specific entity—a variable, function, type, and so on. However, a given name can be reused to refer to different entities at different points in the program.
+
+	A scope is a part of the program in which a name has a particular meaning. Most scopes in C++ are delimited by curly braces.
+
+	The same name can refer to different entities in different scopes. Names are visible from the point where they are declared until the end of the scope in which the declaration appears.
+
+			#include <iostream>
+			int main()
+			{
+				int sum = 0;
+				// sum values from 1 through 10 inclusive
+				for (int val = 1; val <= 10; ++val)
+					sum += val;  // equivalent to sum = sum + val
+				std::cout << "Sum of 1 to 10 inclusive is "
+						  << sum << std::endl;
+				return 0;
+			}
+
+	This program defines three names—main, sum, and val—and uses the namespace name std, along with two names from that namespace—cout and endl.
+
+	 
+	The name main is defined outside any curly braces. The name main—like most names defined outside a function—has global scope. Once declared, names at the global scope are accessible throughout the program. 
+
+	The name sum is defined within the scope of the block that is the body of the main function. It is accessible from its point of declaration throughout the rest of the main function but not outside of it. The variable sum has block scope. 
+
+	The name val is defined in the scope of the for statement. It can be used in that statement but not elsewhere in main.
+
+	Advice: Define Variables Where You First Use Them
+
+
+
+
+Nested Scopes:
+ 
+	Scopes can contain other scopes. The contained (or nested) scope is referred to as an inner scope, the containing scope is the outer scope.
+
+	 
+	Once a name has been declared in a scope, that name can be used by scopes nested inside that scope. Names declared in the outer scope can also be redefined in an inner scope:
+
+	 
+
+	 
+	#include <iostream>
+
+	// Program for illustration purposes only: It is bad style for a function
+
+	// to use a global variable and also define a local variable with the same name
+
+	int reused = 42;  // reused has global scope
+
+	int main()
+
+	{
+
+		int unique = 0; // unique has block scope
+
+		// output #1: uses global reused; prints 42 0
+
+		std::cout << reused << " " << unique << std::endl;
+
+		int reused = 0; // new, local object named reused hides global reused
+
+		// output #2: uses local reused; prints 0 0
+
+		std::cout << reused << " " << unique << std::endl;
+
+		// output #3: explicitly requests the global reused; prints 42 0
+
+		std::cout << ::reused << " " << unique << std::endl;
+
+		return 0;
+
+	}
+
+	 
+	Output #1 appears before the local definition of reused. Therefore, this output statement uses the name reused that is defined in the global scope. This statement prints 42 0. Output #2 occurs after the local definition of reused. The local reused is now in scope. Thus, this second output statement uses the local object named reused rather than the global one and prints 0 0. Output #3 uses the scope operator (§ 1.2, p. 8) to override the default scoping rules. The global scope has no name. Hence, when the scope operator has an empty left-hand side, it is a request to fetch the name on the right-hand side from the global scope. Thus, this expression uses the global reused and prints 42 0.
+

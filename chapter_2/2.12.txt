@@ -1,0 +1,13 @@
+Exercise 2.12: Which, if any, of the following names are invalid?
+(a) int double = 3.14;
+(b) int _;
+(c) int catch-22;
+(d) int 1_or_2 = 1;
+(e) double Double = 3.14;
+
+
+a) invalid - also type name for doubles, defined as int
+b) invalid - identifier uses underscore outside of a function .
+c) valid - but better name is catch_22 or catch22
+d) valid
+e) valid - but very confusing, as identifier uses capital D to id 3.14 as a double
