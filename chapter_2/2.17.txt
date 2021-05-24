@@ -1,0 +1,14 @@
+Exercise 2.17: What does the following code print?
+
+    int i, &ri = i;
+    i = 5; ri = 10;
+    std::cout << i << " " << ri << std::endl;
+
+- initializes i as a integer, creates ref to i &ri
+- assigns 5 to i, then assigns 10 to ri (ref)
+- prints both i and ri, 
+
+print will be:
+10 10
+
+because when assigning value to reference, it assigns value to object referenced 

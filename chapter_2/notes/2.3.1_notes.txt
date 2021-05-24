@@ -1,0 +1,45 @@
+2.3 - Compound Types
+
+    compound types are types that are defined in terms of another type.
+        
+    Defining variables of compound type is more complicated than the declarations we’ve seen so far. In § 2.2 we said that simple declarations consist of a type followed by a list of variable names. More generally, a declaration is a base type followed by a list of declarators. Each declarator names a variable and gives the variable a type that is related to the base type.
+
+    The declarations we have seen so far have declarators that are nothing more than variable names. The type of such variables is the base type of the declaration. More complicated declarators specify variables with compound types that are built from the base type of the declaration.
+
+    
+    
+2.3.1 - References
+
+    References define an alternative name for an object. a reference type "refers" to another type. 
+
+    To define a reference type by writing a declarator of the form &d, where d is the name being declared:
+
+        int ival = 1024;
+        int &refVal = ival;  // refVal refers to (is another name for) ival
+        int &refVal2;        // error: a reference must be initialized
+
+    References are an alias for another object - a shortcut link 
+
+    after a reference has been defined,all operations on that reference are actually operations on the object to which the reference is bound:
+
+        refVal = 2;      // assigns 2 to the object to which refVal refers, i.e., to ival
+        int ii = refVal; // same as ii = ival
+
+
+    When we assign to a reference, we are assigning to the object to which the reference is bound. When we fetch the value of a reference, we are really fetching the value of the object to which the reference is bound. Similarly, when we use a reference as an initializer, we are really using the object to which the reference is bound:
+
+        // ok: refVal3 is bound to the object to which refVal is bound, i.e., to iva
+        int &refVal3 = refVal;
+
+        // initializes i from the value in the object to which refVal is bound
+        int i = refVal; // ok: initializes i to the same value as ival
+
+    Because references are not objects, we may not define a reference to a reference.
+    
+    
+    You can define multiple references in a single definition. Each identifier that is a reference must be preceded by the & symbol:
+
+        int i = 1024, i2 = 2048;  // i and i2 are both ints
+        int &r = i, r2 = i2;      // r is a reference bound to i; r2 is an int
+        int i3 = 1024, &ri = i3;  // i3 is an int; ri is a reference bound to i3
+        int &r3 = i3, &r4 = i2;   // both r3 and r4 are references

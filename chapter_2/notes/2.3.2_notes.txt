@@ -1,0 +1,112 @@
+2.3.2. Pointers
+
+    A pointer is a compound type that “points to” another type. Like references, pointers are used for indirect access to other objects. Unlike a reference, a pointer is an object in its own right. Pointers can be assigned and copied; a single pointer can point to several different objects over its lifetime. Unlike a reference, a pointer need not be initialized at the time it is defined. Like other built-in types, pointers defined at block scope have undefined value if they are not initialized.
+
+
+    We define a pointer type by writing a declarator of the form *d, where d is the name being defined. The * must be repeated for each pointer variable:
+
+        int *ip1, *ip2;  // both ip1 and ip2 are pointers to int
+        double dp, *dp2; // dp2 is a pointer to double; dp is a double
+        
+   - Taking the Address of an Object
+ 
+    A pointer holds the address of another object. We get the address of an object by using the address of the operator (the & operator):
+ 
+        int ival = 42;
+        int *p = &ival; // p holds the address of ival; p is a pointer to ival
+
+    The second statement defines p as a pointer to int and initializes p to point to the int object named ival. Because references are not objects, they don’t have addresses. Hence, we may not define a pointer to a reference.
+    
+    With two exceptions, which we cover in § 2.4.2 (p. 62) and § 15.2.3 (p. 601), the types of the pointer and the object to which it points must match:
+
+        double dval;
+        double *pd = &dval;  // ok: initializer is the address of a double
+        double *pd2 = pd;    // ok: initializer is a pointer to double
+        int *pi = pd;  // error: types of pi and pd differ
+        pi = &dval;    // error: assigning the address of a double to a pointer to int
+ 
+    The types must match because the type of the pointer is used to infer the type of the object to which the pointer points. If a pointer addressed an object of another type, operations performed on the underlying object would fail
+    
+    
+    
+    - Pointer Value
+ 
+        The value (i.e., the address) stored in a pointer can be in one of four states:
+         
+            1. It can point to an object.       
+            2. It can point to the location just immediately past the end of an object.        
+            3. It can be a null pointer, indicating that it is not bound to any object.         
+            4. It can be invalid; values other than the preceding three are invalid.
+         
+        It is an error to copy or otherwise try to access the value of an invalid pointer. As when we use an uninitialized variable, this error is one that the compiler is unlikely to detect. The result of accessing an invalid pointer is undefined. Therefore, we must always know whether a given pointer is valid.
+         
+        Although pointers in cases 2 and 3 are valid, there are limits on what we can do with such pointers. Because these pointers do not point to any object, we may not use them to access the (supposed) object to which the pointer points. If we do attempt to access an object through such pointers, the behavior is undefined.
+
+    
+    - Using a Pointer to Access an Object
+ 
+        When a pointer points to an object, we can use the dereference operator (the * operator) to access that object:
+
+            int ival = 42;
+            int *p = &ival; // p holds the address of ival; p is a pointer to ival
+            cout << *p;     // * yields the object to which p points; prints 42
+ 
+        Dereferencing a pointer yields the object to which the pointer points. We can assign to that object by assigning to the result of the dereference:
+
+            *p = 0;     // * yields the object; we assign a new value to ival through p
+            cout << *p; // prints 0
+
+        When we assign to *p, we are assigning to the object to which p points.
+
+
+    - Key Concept: Some Symbols Have Multiple Meanings
+
+ 
+        Some symbols, such as & and *, are used as both an operator in an expression and as part of a declaration. The context in which a symbol is used determines what the symbol means:
+        
+        i = 42;
+        int &r = i;   // & follows a type and is part of a declaration; r is a reference
+        int *p;       // * follows a type and is part of a declaration; p is a pointer
+        p = &i;       // & is used in an expression as the address-of operator
+        *p = i;       // * is used in an expression as the dereference operator
+        int &r2 = *p; // & is part of the declaration; * is the dereference operator
+         
+        In declarations, & and * are used to form compound types. In expressions, these same symbols are used to denote an operator. Because the same symbol is used with very different meanings, it can be helpful to ignore appearances and think of them as if they were different symbols.
+
+    - Null Pointers
+ 
+        A null pointer does not point to any object. Code can check whether a pointer is null before attempting to use it. There are several ways to obtain a null pointer:
+
+            int *p1 = nullptr; // equivalent to int *p1 = 0;
+            int *p2 = 0;       // directly initializes p2 from the literal constant 0
+            // must #include cstdlib
+            int *p3 = NULL;    // equivalent to int *p3 = 0;
+
+        The most direct approach is to initialize the pointer using the literal nullptr, which was introduced by the new standard. nullptr is a literal that has a special type that can be converted (§ 2.1.2, p. 35) to any other pointer type. Alternatively, we can initialize a pointer to the literal 0, as we do in the definition of p2.
+
+         
+        Older programs sometimes use a preprocessor variable named NULL, which the cstdlib header defines as 0.
+
+         
+        We’ll describe the preprocessor in a bit more detail in § 2.6.3 (p. 77). What’s useful to know now is that the preprocessor is a program that runs before the compiler. Preprocessor variables are managed by the preprocessor, and are not part of the std namespace. As a result, we refer to them directly without the std:: prefix.
+
+         
+        When we use a preprocessor variable, the preprocessor automatically replaces the variable by its value. Hence, initializing a pointer to NULL is equivalent to initializing it to 0. ModernC++ programs generally should avoid using NULL and use nullptr instead.
+
+         
+        It is illegal to assign an int variable to a pointer, even if the variable’s value happens to be 0.
+
+            int zero = 0;
+            pi = zero;        // error: cannot assign an int to a pointer
+
+    - Initialize ALL POINTERS
+
+        Uninitialized pointers are a common source of run-time errors.
+
+    - assignments and pointers:
+        
+        Both pointers and reds get indirect access to other objects. 
+        
+        References are NOT objects though, once a reference is defined, there is not way to change the referenced object it will always be bound to the initial assign object. 
+
+        However with 
